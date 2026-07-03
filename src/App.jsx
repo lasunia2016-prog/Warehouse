@@ -105,11 +105,11 @@ const VENTAS = [
 ];
 
 const EMPLEADOS = [
-  { id: 1, nombre: "Admin General", correo: "admin@warehouse.cl", rol: "Administrador", estado: "Activo" },
+  { id: 1, nombre: "Kim Seo-yeon", correo: "admin@warehouse.cl", rol: "Administrador", estado: "Activo" },
   { id: 2, nombre: "Ana Bodeguera", correo: "bodega2@warehouse.cl", rol: "Bodeguero", estado: "Activo" },
-  { id: 3, nombre: "Carlos Vendedor", correo: "vendedor1@warehouse.cl", rol: "Vendedor", estado: "Activo" },
+  { id: 3, nombre: "Park Min-ho", correo: "vendedor1@warehouse.cl", rol: "Vendedor", estado: "Activo" },
   { id: 4, nombre: "Juan Bodeguero", correo: "bodega1@warehouse.cl", rol: "Bodeguero", estado: "Activo" },
-  { id: 5, nombre: "Maria Vendedora", correo: "vendedor2@warehouse.cl", rol: "Vendedor", estado: "Activo" },
+  { id: 5, nombre: "Choi Su-jin", correo: "vendedor2@warehouse.cl", rol: "Vendedor", estado: "Activo" },
 ];
 
 const ROLES = [
