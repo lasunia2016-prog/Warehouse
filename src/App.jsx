@@ -1,5 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
 
+// Reemplaza estos textos con los valores que copiaste en el Paso 1
+const supabaseUrl = "https://sdagwbhgpmqggxblairs.supabase.co";
+const supabaseKey = "sb_publishable_YYQCQ4KspjPKcQ0pQ8EJhA_3kiiB1A2";
+const supabase = createClient(supabaseUrl, supabaseKey);
 /* ================= DATA ================= */
 
 const STOCK_INICIAL = [
@@ -96,34 +101,6 @@ const VENTAS = [
       { producto: "Pantalón deportivo blanco", cantidad: 150, precio: 6500, descuento: 0 },
     ],
     pagos: [{ metodo: "Transferencia", estado: "Completado", fecha: "10/6/2026, 10:12:03 a.m.", total: 2849836 }],
-  },
-];
-
-const CONSULTAS_INICIALES = [
-  {
-    id: "c-9281", cliente: "+56 9 8123 4471", nombre: "María José P.", producto: "Polera estampada manga larga",
-    cantidad: 120, urgencia: "Esta semana", recibido: "Hoy, 22:41", estado: "Nueva",
-    mensaje: "Hola! necesito poleras estampadas para mi tienda, ¿tienen stock?",
-  },
-  {
-    id: "c-9280", cliente: "+56 9 5567 2210", nombre: "Comercial Andina", producto: "Chaqueta mezclilla azul",
-    cantidad: 60, urgencia: "Hoy", recibido: "Hoy, 21:05", estado: "Nueva",
-    mensaje: "Buenas, cotización urgente chaquetas mezclilla talla S-XL",
-  },
-  {
-    id: "c-9278", cliente: "+56 9 3390 8812", nombre: "Rodrigo F.", producto: "Suéter beige",
-    cantidad: 45, urgencia: "Sin apuro", recibido: "Ayer, 23:37", estado: "Contactado",
-    mensaje: "Quiero saber precios por mayor del suéter beige",
-  },
-  {
-    id: "c-9275", cliente: "+56 9 7742 0093", nombre: "Tienda Lila", producto: "Cardigan rosado",
-    cantidad: 80, urgencia: "Esta semana", recibido: "Ayer, 20:18", estado: "Convertida",
-    mensaje: "Hola, necesito cardigans rosados, ¿precio x 80 unidades?",
-  },
-  {
-    id: "c-9271", cliente: "+56 9 6210 5548", nombre: "Felipe C.", producto: "Blusa animal print",
-    cantidad: 10, urgencia: "Sin apuro", recibido: "Lunes, 19:44", estado: "Descartada",
-    mensaje: "precio blusa animal print?",
   },
 ];
 
@@ -727,15 +704,39 @@ function Roles() {
   );
 }
 
+
 /* ================= APP ================= */
 
 export default function App() {
   const [page, setPage] = useState("inicio");
   const [ventaSel, setVentaSel] = useState(null);
-  const [consultas, setConsultas] = useState(CONSULTAS_INICIALES);
+  
+  // Iniciamos la tabla vacía en vez de usar los datos inventados
+  const [consultas, setConsultas] = useState([]); 
+
+  useEffect(() => {
+    const fetchConsultas = async () => {
+      const { data, error } = await supabase
+        .from('consultas')
+        .select('*');
+      
+      if (error) {
+        console.error("Error de Supabase:", error);
+      } else {
+        setConsultas(data || []);
+      }
+    };
+
+    fetchConsultas(); 
+    
+    // El actualizador automático cada 3 segundos
+    const interval = setInterval(fetchConsultas, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const nuevas = consultas.filter((c) => c.estado === "Nueva").length;
-
+  
+  // ... abajo sigue la variable "const nav = [" y el resto del código original
   const nav = [
     { section: null, items: [{ id: "inicio", label: "Inicio", icon: icons.home }] },
     {
